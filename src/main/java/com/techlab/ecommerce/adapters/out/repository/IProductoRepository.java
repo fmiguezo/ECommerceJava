@@ -1,5 +1,6 @@
 package com.techlab.ecommerce.adapters.out.repository;
 
+import com.techlab.ecommerce.domain.exceptions.ProductoNoEncontradoException;
 import com.techlab.ecommerce.domain.exceptions.ProductoYaExistenteException;
 import com.techlab.ecommerce.domain.model.producto.IProducto;
 
@@ -12,5 +13,4 @@ public interface IProductoRepository {
     IProducto buscar(UUID id);
     IProducto buscar(String nombre);
     void eliminar(UUID id);
-    void actualizar(IProducto producto);
 }

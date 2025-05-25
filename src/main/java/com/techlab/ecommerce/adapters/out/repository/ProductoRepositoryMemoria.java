@@ -1,5 +1,6 @@
 package com.techlab.ecommerce.adapters.out.repository;
 
+import com.techlab.ecommerce.domain.exceptions.ProductoNoEncontradoException;
 import com.techlab.ecommerce.domain.exceptions.ProductoYaExistenteException;
 import com.techlab.ecommerce.domain.model.producto.IProducto;
 
@@ -7,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class ProductoRepositoryMemoria implements IProductoRepository {
+public class ProductoRepositoryMemoria implements IProductoRepository {
     private List<IProducto> productos = new ArrayList<>();
 
     @Override

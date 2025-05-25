@@ -62,7 +62,6 @@ public class ProductoService implements IProductoService {
             IProducto producto = productoOpt.get();
             producto.setPrecio(nuevoPrecio);
             producto.setStock(nuevoStock);
-            productoRepository.actualizar(producto);
         } else {
             throw new ProductoNoEncontradoException("Producto no encontrado con nombre: " + nombre);
         }
@@ -85,7 +84,6 @@ public class ProductoService implements IProductoService {
             throw new StockInsuficienteException("Stock insuficiente para disminuir");
         }
         producto.setStock(producto.getStock() - cantidad);
-        productoRepository.actualizar(producto);
     }
 
     @Override
@@ -94,7 +92,6 @@ public class ProductoService implements IProductoService {
             throw new CantidadNegativaException("La cantidad a aumentar no puede ser negativa");
         }
         producto.setStock(producto.getStock() + cantidad);
-        productoRepository.actualizar(producto);
     }
 
     @Override

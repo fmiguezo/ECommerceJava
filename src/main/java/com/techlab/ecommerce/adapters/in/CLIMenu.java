@@ -67,6 +67,7 @@ public class CLIMenu implements IEntrada {
                 case 7:
                     continuar = false;
                     System.out.println("Saliendo del sistema...");
+                    scanner.close();
                     break;
                 default:
                     System.out.println("Opción no válida, intente nuevamente.");

@@ -84,7 +84,6 @@ class ProductoServiceTest {
 
         assertEquals(600.0, producto.getPrecio());
         assertEquals(8, producto.getStock());
-        verify(productoRepository).actualizar(producto);
     }
 
     @Test
@@ -103,7 +102,6 @@ class ProductoServiceTest {
         IProducto producto = new Producto("Silla", 100.0, 10);
         productoService.disminuirStock(producto, 3);
         assertEquals(7, producto.getStock());
-        verify(productoRepository).actualizar(producto);
     }
 
     @Test
@@ -112,7 +110,6 @@ class ProductoServiceTest {
         assertThrows(StockInsuficienteException.class, () -> {
             productoService.disminuirStock(producto, 3);
         });
-        verify(productoRepository, never()).actualizar(any());
     }
 
     @Test
@@ -120,7 +117,6 @@ class ProductoServiceTest {
         IProducto producto = new Producto("Mesa", 200.0, 5);
         productoService.aumentarStock(producto, 5);
         assertEquals(10, producto.getStock());
-        verify(productoRepository).actualizar(producto);
     }
 
     @Test
@@ -129,6 +125,5 @@ class ProductoServiceTest {
         assertThrows(CantidadNegativaException.class, () -> {
             productoService.aumentarStock(producto, -3);
         });
-        verify(productoRepository, never()).actualizar(any());
     }
 }
