@@ -24,11 +24,11 @@ public class GestionarProductoUseCase {
         return productoService.listarProductos();
     }
 
-    public Optional<IProducto> buscarProductoPorId(UUID id) {
+    public Optional<IProducto> buscarProducto(UUID id) {
         return productoService.buscarProducto(id);
     }
 
-    public Optional<IProducto> buscarProductoPorNombre(String nombre) {
+    public Optional<IProducto> buscarProducto(String nombre) {
         return productoService.buscarProducto(nombre);
     }
 

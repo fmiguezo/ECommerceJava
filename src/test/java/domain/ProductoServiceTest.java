@@ -90,7 +90,8 @@ class ProductoServiceTest {
     @Test
     void eliminarProducto_DeberiaEliminarSiExiste() throws Exception {
         IProducto producto = new Producto("Monitor", 300.0, 7);
-        when(productoRepository.buscar("Monitor")).thenReturn(producto);
+
+        when(productoRepository.buscar(producto.getId())).thenReturn(producto);
 
         productoService.eliminarProducto(producto.getId());
 
