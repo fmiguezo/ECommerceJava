@@ -1,9 +1,6 @@
 package com.techlab.ecommerce.domain.service.producto;
 
-import com.techlab.ecommerce.domain.exceptions.CantidadNegativaException;
-import com.techlab.ecommerce.domain.exceptions.ProductFactoryNotSetException;
-import com.techlab.ecommerce.domain.exceptions.ProductoNoEncontradoException;
-import com.techlab.ecommerce.domain.exceptions.StockInsuficienteException;
+import com.techlab.ecommerce.domain.exceptions.*;
 import com.techlab.ecommerce.domain.model.producto.IProducto;
 import com.techlab.ecommerce.domain.model.producto.Producto;
 import com.techlab.ecommerce.domain.model.producto.ProductoFactory;
@@ -16,7 +13,9 @@ public class ProductoService implements IProductoService {
     private ProductoFactory productoFactory;
     private List<IProducto> productos;
 
-    public ProductoService() {}
+    public ProductoService() {
+        this.productos = new ArrayList<>();
+    }
 
     public ProductoService(ProductoFactory productoFactory) {
         this.productoFactory = productoFactory;
@@ -24,10 +23,12 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
-    public IProducto crearProducto(String nombre, double precio, int stock) {
-        for (IProducto producto : productos) {
-            if (producto.getNombre().equalsIgnoreCase(nombre)) {
-                return producto;
+    public IProducto crearProducto(String nombre, double precio, int stock) throws ProductoYaExistenteException {
+        if (false == productos.isEmpty()) {
+            for (IProducto producto : productos) {
+                if (producto.getNombre().equalsIgnoreCase(nombre)) {
+                    throw new ProductoYaExistenteException("El producto ya existe con el nombre: " + nombre);
+                }
             }
         }
         IProducto nuevoProducto = new Producto(nombre, precio, stock);
@@ -47,12 +48,12 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
-    public Optional<IProducto> buscarPorId(int id) {
+    public Optional<IProducto> buscarProducto(int id) {
         return Optional.empty();
     }
 
     @Override
-    public Optional<IProducto> buscarPorNombre(String nombre) {
+    public Optional<IProducto> buscarProducto(String nombre) {
         return productos.stream()
                 .filter(producto -> producto.getNombre().equalsIgnoreCase(nombre))
                 .findFirst();
@@ -60,7 +61,7 @@ public class ProductoService implements IProductoService {
 
     @Override
     public void actualizarProducto(int id, double nuevoPrecio, int nuevoStock) throws ProductoNoEncontradoException {
-        Optional<IProducto> productoOpt = buscarPorId(id);
+        Optional<IProducto> productoOpt = buscarProducto(id);
         if (productoOpt.isPresent()) {
             IProducto producto = productoOpt.get();
             producto.setPrecio(nuevoPrecio);
@@ -72,7 +73,7 @@ public class ProductoService implements IProductoService {
 
     @Override
     public void eliminarProducto(int id) throws ProductoNoEncontradoException {
-        Optional<IProducto> productoOpt = buscarPorId(id);
+        Optional<IProducto> productoOpt = buscarProducto(id);
         if (productoOpt.isPresent()) {
             productos.remove(productoOpt.get());
         } else {
@@ -107,5 +108,33 @@ public class ProductoService implements IProductoService {
             throw new CantidadNegativaException("La cantidad a aumentar no puede ser negativa");
         }
         producto.setStock(producto.getStock() + cantidad);
+    }
+
+    @Override
+    public void mostrarDetalle(IProducto producto) {
+        System.out.println("ID: " + producto.getId());
+        System.out.println("Nombre: " + producto.getNombre());
+        System.out.println("Precio: " + producto.getPrecio());
+        System.out.println("Stock: " + producto.getStock());
+    }
+
+    @Override
+    public void buscarYMostrarProducto(int id) throws ProductoNoEncontradoException {
+        Optional<IProducto> productoOpt = buscarProducto(id);
+        if (productoOpt.isPresent()) {
+            mostrarDetalle(productoOpt.get());
+        } else {
+            throw new ProductoNoEncontradoException("Producto no encontrado con ID: " + id);
+        }
+    }
+
+    @Override
+    public void buscarYMostrarProducto(String nombre) throws ProductoNoEncontradoException {
+        Optional<IProducto> productoOpt = buscarProducto(nombre);
+        if (productoOpt.isPresent()) {
+            mostrarDetalle(productoOpt.get());
+        } else {
+            throw new ProductoNoEncontradoException("Producto no encontrado con nombre: " + nombre);
+        }
     }
 }
