@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public interface IProducto {
     UUID getId();
+    void setId(UUID id);
     String getNombre();
     void setNombre(String nombre);
     double getPrecio();

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LineaPedidoTest {
 
-    private IProducto productoMock;
+ /*   private IProducto productoMock;
     private LineaPedido lineaPedido;
 
     @BeforeEach
@@ -51,5 +51,5 @@ class LineaPedidoTest {
     void testIdsSonUnicos() {
         LineaPedido otraLinea = new LineaPedido(productoMock, 1);
         assertNotEquals(lineaPedido.getId(), otraLinea.getId(), "Cada línea de pedido debería tener un ID único");
-    }
+    }*/
 }

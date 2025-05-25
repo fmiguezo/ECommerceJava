@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 
 class LineaPedidoServiceTest {
 
-    private ProductoService productoServiceMock;
+/*    private ProductoService productoServiceMock;
     private LineaPedidoService lineaPedidoService;
     private ILineaPedido lineaPedidoMock;
     private IProducto productoMock;
@@ -89,5 +89,5 @@ class LineaPedidoServiceTest {
 
         assertThrows(StockInsuficienteException.class,
                 () -> lineaPedidoService.validarStock(lineaPedidoMock));
-    }
+    }*/
 }

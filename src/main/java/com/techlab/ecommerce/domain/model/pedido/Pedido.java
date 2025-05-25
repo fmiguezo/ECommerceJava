@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class Pedido implements IPedido {
-    private final UUID id;
-    private final List<ILineaPedido> lineas;
+    private UUID id;
+    private List<ILineaPedido> lineas;
 
     public Pedido(List<ILineaPedido> lineas) {
         this.id = UUID.randomUUID();
@@ -20,7 +20,17 @@ public class Pedido implements IPedido {
     }
 
     @Override
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    @Override
     public List<ILineaPedido> getLineas() {
         return lineas;
+    }
+
+    @Override
+    public void setLineas(List<ILineaPedido> lineas) {
+        this.lineas = lineas;
     }
 }

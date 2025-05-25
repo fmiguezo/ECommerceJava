@@ -7,5 +7,7 @@ import java.util.UUID;
 
 public interface IPedido {
     UUID getId();
+    void setId(UUID id);
     List<ILineaPedido> getLineas();
+    void setLineas(List<ILineaPedido> lineas);
 }

@@ -6,7 +6,7 @@ import com.techlab.ecommerce.domain.model.producto.IProducto;
 import java.util.UUID;
 
 public class LineaPedido implements ILineaPedido {
-    private final UUID id;
+    private UUID id;
     private final IProducto producto;
     private int cantidad;
 
@@ -19,6 +19,11 @@ public class LineaPedido implements ILineaPedido {
     @Override
     public UUID getId() {
         return id;
+    }
+
+    @Override
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     @Override

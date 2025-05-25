@@ -3,9 +3,11 @@ package com.techlab.ecommerce.domain.service.pedido;
 import com.techlab.ecommerce.domain.model.lineapedido.ILineaPedido;
 import com.techlab.ecommerce.domain.model.pedido.IPedido;
 import com.techlab.ecommerce.domain.service.lineapedido.ILineaPedidoService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class PedidoService implements IPedidoService {
     private ILineaPedidoService lineaPedidoService;
 

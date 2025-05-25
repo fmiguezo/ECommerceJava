@@ -8,8 +8,8 @@ public class ProductoDTO {
     private double precio;
     private int stock;
 
-    public ProductoDTO(UUID id, String nombre, double precio, int stock) {
-        this.id = id;
+    public ProductoDTO(String nombre, double precio, int stock) {
+        this.id = null;
         this.nombre = nombre;
         this.precio = precio;
         this.stock = stock;

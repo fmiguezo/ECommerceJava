@@ -1,4 +1,4 @@
-package com.techlab.ecommerce.adapters.out.repository;
+package com.techlab.ecommerce.infrastructure.ports.out;
 
 import com.techlab.ecommerce.domain.model.pedido.IPedido;
 
@@ -8,10 +8,7 @@ import java.util.UUID;
 
 public interface IPedidoRepository {
     void guardar(IPedido pedido);
-
     Optional<IPedido> buscarPorId(UUID id);
-
     List<IPedido> obtenerTodos();
-
     void eliminar(IPedido pedido);
 }

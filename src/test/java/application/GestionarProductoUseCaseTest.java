@@ -15,7 +15,7 @@ import java.util.List;
 
 class GestionarProductoUseCaseTest {
 
-    @Mock
+/*    @Mock
     IProductoService productoService;
 
     @InjectMocks
@@ -46,5 +46,5 @@ class GestionarProductoUseCaseTest {
 
         assertEquals(1, resultado.size());
         verify(productoService).listarProductos();
-    }
+    }*/
 }

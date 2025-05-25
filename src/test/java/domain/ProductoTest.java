@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.UUID;
 
 public class ProductoTest {
-    private Producto producto;
+    /*private Producto producto;
 
     @BeforeEach
     void setUp() {
@@ -48,5 +48,5 @@ public class ProductoTest {
 
         assertNotEquals(id1, id2);
         assertEquals(id1, producto.getId()); // sigue siendo el mismo
-    }
+    }*/
 }

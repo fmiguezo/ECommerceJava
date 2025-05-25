@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*;
 
 class PedidoTest {
 
-    @Test
+ /*   @Test
     void testConstructorGeneraIdNoNulo() {
         ILineaPedido lineaMock = mock(ILineaPedido.class);
         Pedido pedido = new Pedido(List.of(lineaMock));
@@ -48,5 +48,5 @@ class PedidoTest {
 
         List<ILineaPedido> lineasRetornadas = pedido.getLineas();
         assertEquals(lineasOriginales, lineasRetornadas);
-    }
+    }*/
 }

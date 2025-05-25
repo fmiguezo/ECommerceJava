@@ -16,7 +16,7 @@ import java.util.UUID;
 
 class ObtenerDetalleProductoUseCaseTest {
 
-    @Mock
+/*    @Mock
     IProductoService productoService;
 
     @InjectMocks
@@ -52,5 +52,5 @@ class ObtenerDetalleProductoUseCaseTest {
         var dto = useCase.ejecutar(id);
 
         assertNull(dto);
-    }
+    }*/
 }

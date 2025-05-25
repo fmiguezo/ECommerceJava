@@ -1,13 +1,16 @@
 package com.techlab.ecommerce.application.usecase;
 
+import com.techlab.ecommerce.application.dto.ProductoDTO;
 import com.techlab.ecommerce.domain.exceptions.*;
 import com.techlab.ecommerce.domain.model.producto.IProducto;
 import com.techlab.ecommerce.domain.service.producto.IProductoService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class GestionarProductoUseCase {
 
     private final IProductoService productoService;
@@ -16,19 +19,21 @@ public class GestionarProductoUseCase {
         this.productoService = productoService;
     }
 
-    public IProducto crearProducto(String nombre, double precio, int stock) throws ProductoYaExistenteException {
-        return productoService.crearProducto(nombre, precio, stock);
+    public ProductoDTO crearProducto(String nombre, double precio, int stock) throws ProductoYaExistenteException {
+        ProductoDTO productoDTO = new ProductoDTO(nombre, precio, stock);
+        productoService.crearProducto(productoDTO);
+        return productoDTO;
     }
 
-    public List<IProducto> listarProductos() {
+    public List<ProductoDTO> listarProductos() {
         return productoService.listarProductos();
     }
 
-    public Optional<IProducto> buscarProducto(UUID id) {
+    public Optional<ProductoDTO> buscarProducto(UUID id) {
         return productoService.buscarProducto(id);
     }
 
-    public Optional<IProducto> buscarProducto(String nombre) {
+    public Optional<ProductoDTO> buscarProducto(String nombre) {
         return productoService.buscarProducto(nombre);
     }
 
@@ -41,11 +46,11 @@ public class GestionarProductoUseCase {
         productoService.eliminarProducto(id);
     }
 
-    public void aumentarStock(IProducto producto, int cantidad) throws CantidadNegativaException {
+    public void aumentarStock(ProductoDTO producto, int cantidad) throws CantidadNegativaException {
         productoService.aumentarStock(producto, cantidad);
     }
 
-    public void disminuirStock(IProducto producto, int cantidad) throws StockInsuficienteException {
+    public void disminuirStock(ProductoDTO producto, int cantidad) throws StockInsuficienteException {
         productoService.disminuirStock(producto, cantidad);
     }
 }

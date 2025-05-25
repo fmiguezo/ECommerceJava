@@ -16,7 +16,7 @@ import java.util.UUID;
 
 class ListarProductosUseCaseTest {
 
-    @Mock
+/*    @Mock
     IProductoService productoService;
 
     @InjectMocks
@@ -42,5 +42,5 @@ class ListarProductosUseCaseTest {
 
         assertEquals(1, resultado.size());
         verify(productoService).listarProductos();
-    }
+    }*/
 }

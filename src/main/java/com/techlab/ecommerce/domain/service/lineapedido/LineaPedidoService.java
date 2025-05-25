@@ -5,7 +5,9 @@ import com.techlab.ecommerce.domain.exceptions.ProductoNoEncontradoException;
 import com.techlab.ecommerce.domain.exceptions.StockInsuficienteException;
 import com.techlab.ecommerce.domain.model.lineapedido.ILineaPedido;
 import com.techlab.ecommerce.domain.service.producto.ProductoService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class LineaPedidoService implements ILineaPedidoService {
     private ProductoService productoService;
 

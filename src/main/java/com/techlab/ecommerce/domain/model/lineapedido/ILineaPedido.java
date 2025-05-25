@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public interface ILineaPedido {
     UUID getId();
+    void setId(UUID id);
     IProducto getProducto();
     int getCantidad();
     void setCantidad(int cantidad) throws CantidadNegativaException;

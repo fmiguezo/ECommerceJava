@@ -1,7 +1,5 @@
 package com.techlab.ecommerce.application.usecase;
 
-import com.techlab.ecommerce.adapters.out.repository.IPedidoRepository;
-import com.techlab.ecommerce.adapters.out.repository.IProductoRepository;
 import com.techlab.ecommerce.domain.exceptions.StockInsuficienteException;
 import com.techlab.ecommerce.domain.model.lineapedido.ILineaPedido;
 import com.techlab.ecommerce.domain.model.lineapedido.LineaPedido;
@@ -10,12 +8,16 @@ import com.techlab.ecommerce.domain.model.pedido.Pedido;
 import com.techlab.ecommerce.domain.model.producto.IProducto;
 import com.techlab.ecommerce.domain.service.producto.IProductoService;
 import com.techlab.ecommerce.domain.service.producto.ProductoService;
+import com.techlab.ecommerce.infrastructure.ports.out.IPedidoRepository;
+import com.techlab.ecommerce.infrastructure.ports.out.IProductoRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Service
 public class CrearPedidoUseCase {
     private final IProductoRepository productoRepository;
     private final IPedidoRepository pedidoRepository;

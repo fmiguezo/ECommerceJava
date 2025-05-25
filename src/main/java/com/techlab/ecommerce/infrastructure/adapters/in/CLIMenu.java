@@ -1,4 +1,4 @@
-package com.techlab.ecommerce.adapters.in;
+package com.techlab.ecommerce.infrastructure.adapters.in;
 
 import com.techlab.ecommerce.application.dto.LineaPedidoDTO;
 import com.techlab.ecommerce.application.dto.PedidoDTO;
@@ -67,6 +67,7 @@ public class CLIMenu implements IEntrada {
                 case 7:
                     continuar = false;
                     System.out.println("Saliendo del sistema...");
+                    scanner.close();
                     break;
                 default:
                     System.out.println("Opción no válida, intente nuevamente.");

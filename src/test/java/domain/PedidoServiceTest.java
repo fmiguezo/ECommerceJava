@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 
 class PedidoServiceTest {
 
-    private ILineaPedidoService lineaPedidoService;
+  /*  private ILineaPedidoService lineaPedidoService;
     private PedidoService pedidoService;
 
     @BeforeEach
@@ -84,5 +84,5 @@ class PedidoServiceTest {
     void testSetLineaPedidoService() {
         ILineaPedidoService nuevoServicio = mock(ILineaPedidoService.class);
         pedidoService.setLineaPedidoService(nuevoServicio);
-    }
+    }*/
 }

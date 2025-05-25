@@ -1,13 +1,14 @@
-package com.techlab.ecommerce.adapters.out.repository;
+package com.techlab.ecommerce.infrastructure.adapters.out.repository.memoria;
 
 import com.techlab.ecommerce.domain.model.pedido.IPedido;
+import com.techlab.ecommerce.infrastructure.adapters.out.repository.IPedidoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class PedidoRepositoryMemoria implements IPedidoRepository {
+public class RepositoryMemoriaPedido implements IPedidoRepository {
     private final List<IPedido> pedidos = new ArrayList<>();
 
     @Override

@@ -3,7 +3,7 @@ package com.techlab.ecommerce.domain.model.producto;
 import java.util.UUID;
 
 public class Producto implements IProducto {
-    private final UUID id;
+    private UUID id;
     private String nombre;
     private double precio;
     private int stock;
@@ -20,6 +20,10 @@ public class Producto implements IProducto {
         return id;
     }
 
+    @Override
+    public void setId(UUID id) {
+        this.id = id;
+    }
     @Override
     public String getNombre() {
         return nombre;
