@@ -69,13 +69,13 @@ public class ProductoService implements IProductoService {
     }
 
     @Override
-    public void eliminarProducto(String nombre) throws ProductoNoEncontradoException {
-        Optional<IProducto> productoOpt = buscarProducto(nombre);
+    public void eliminarProducto(UUID id) throws ProductoNoEncontradoException {
+        Optional<IProducto> productoOpt = buscarProducto(id);
         if (productoOpt.isPresent()) {
             IProducto producto = productoOpt.get();
             productoRepository.eliminar(producto.getId());
         } else {
-            throw new ProductoNoEncontradoException("Producto no encontrado con nombre: " + nombre);
+            throw new ProductoNoEncontradoException("Producto no encontrado con id: " + id);
         }
     }
 

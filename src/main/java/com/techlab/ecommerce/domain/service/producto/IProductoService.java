@@ -15,7 +15,7 @@ public interface IProductoService {
     Optional<IProducto> buscarProducto(UUID id);
     Optional<IProducto> buscarProducto(String nombre);
     void actualizarProducto(String nombre, double nuevoPrecio, int nuevoStock) throws ProductoNoEncontradoException, ProductoYaExistenteException;
-    void eliminarProducto(String nombre) throws ProductoNoEncontradoException;
+    void eliminarProducto(UUID id) throws ProductoNoEncontradoException;
     void setProductoFactory(ProductoFactory productoFactory);
     ProductoFactory getProductoFactory() throws ProductFactoryNotSetException;
     void disminuirStock(IProducto producto, int cantidad) throws StockInsuficienteException;
