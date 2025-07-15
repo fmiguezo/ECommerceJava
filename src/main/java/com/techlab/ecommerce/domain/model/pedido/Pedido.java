@@ -1,10 +1,12 @@
 package com.techlab.ecommerce.domain.model.pedido;
 
 import com.techlab.ecommerce.domain.model.lineapedido.ILineaPedido;
-
+import lombok.Getter;
+import lombok.Setter;
 import java.util.List;
 import java.util.UUID;
 
+@Getter @Setter
 public class Pedido implements IPedido {
     private UUID id;
     private List<ILineaPedido> lineas;
@@ -14,23 +16,8 @@ public class Pedido implements IPedido {
         this.lineas = lineas;
     }
 
-    @Override
-    public UUID getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(UUID id) {
+    public Pedido(UUID id, List<ILineaPedido> lineas) {
         this.id = id;
-    }
-
-    @Override
-    public List<ILineaPedido> getLineas() {
-        return lineas;
-    }
-
-    @Override
-    public void setLineas(List<ILineaPedido> lineas) {
         this.lineas = lineas;
     }
 }

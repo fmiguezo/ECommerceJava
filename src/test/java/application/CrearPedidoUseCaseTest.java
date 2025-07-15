@@ -1,18 +1,5 @@
 package application;
 
-import com.techlab.ecommerce.application.usecase.CrearPedidoUseCase;
-import com.techlab.ecommerce.domain.exceptions.StockInsuficienteException;
-import com.techlab.ecommerce.domain.model.pedido.IPedido;
-import com.techlab.ecommerce.domain.model.producto.IProducto;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.*;
-
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 class CrearPedidoUseCaseTest {
 
     /*@Mock

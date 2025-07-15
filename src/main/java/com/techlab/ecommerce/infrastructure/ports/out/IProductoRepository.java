@@ -9,9 +9,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface IProductoRepository {
-    void crear(IProducto producto) throws ProductoYaExistenteException;
-    List<IProducto> obtenerTodos();
-    Optional<IProducto> buscar(UUID id);
-    Optional<IProducto> buscar(String nombre);
-    void eliminar(UUID id);
+    IProducto save(IProducto producto);
+    Optional<IProducto> findById(UUID id);
+    Optional<IProducto> findByNombre(String nombre);
+    List<IProducto> findAll();
+    boolean existsById(UUID id);
+    void deleteById(UUID id);
 }

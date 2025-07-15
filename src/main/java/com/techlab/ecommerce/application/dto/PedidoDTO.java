@@ -1,28 +1,17 @@
 package com.techlab.ecommerce.application.dto;
 
+import jakarta.validation.constraints.*;
+import lombok.*;
 import java.util.List;
 import java.util.UUID;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PedidoDTO {
     private UUID id;
     private List<LineaPedidoDTO> lineas;
+
+    @Positive
     private double costoTotal;
-
-    public PedidoDTO(UUID id, List<LineaPedidoDTO> lineas, double costoTotal) {
-        this.id = id;
-        this.lineas = lineas;
-        this.costoTotal = costoTotal;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public List<LineaPedidoDTO> getLineas() {
-        return lineas;
-    }
-
-    public double getCostoTotal() {
-        return costoTotal;
-    }
 }

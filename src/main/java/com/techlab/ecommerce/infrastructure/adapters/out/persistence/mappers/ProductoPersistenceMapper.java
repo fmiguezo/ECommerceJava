@@ -8,14 +8,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductoPersistenceMapper {
 
-    public IProducto toDomain(ProductoEntity productoEntity) {
-        if (productoEntity == null) {
+    public IProducto toDomain(ProductoEntity entity) {
+        if (entity == null) {
             return null;
         }
-
-        IProducto producto = new Producto(productoEntity.getNombre(), productoEntity.getPrecio(), productoEntity.getStock());
-        producto.setId(productoEntity.getId());
-
+        IProducto producto = new Producto(
+                entity.getNombre(),
+                entity.getPrecio(),
+                entity.getStock()
+        );
+        producto.setId(entity.getId());
         return producto;
     }
 
@@ -23,13 +25,11 @@ public class ProductoPersistenceMapper {
         if (producto == null) {
             return null;
         }
-
-        ProductoEntity productoEntity = new ProductoEntity();
-        productoEntity.setId(producto.getId());
-        productoEntity.setNombre(producto.getNombre());
-        productoEntity.setPrecio(producto.getPrecio());
-        productoEntity.setStock(producto.getStock());
-
-        return productoEntity;
+        return new ProductoEntity(
+                producto.getId(),
+                producto.getNombre(),
+                producto.getPrecio(),
+                producto.getStock()
+        );
     }
 }

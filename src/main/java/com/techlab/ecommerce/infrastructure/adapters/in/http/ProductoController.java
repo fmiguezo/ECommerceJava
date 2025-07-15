@@ -1,7 +1,7 @@
-package com.techlab.ecommerce.infrastructure.adapters.in.rest;
+package com.techlab.ecommerce.infrastructure.adapters.in.http;
 
 import com.techlab.ecommerce.application.dto.ProductoDTO;
-import com.techlab.ecommerce.application.usecase.GestionarProductoUseCase;
+import com.techlab.ecommerce.application.usecases.producto.GestionarProductoUseCase;
 import com.techlab.ecommerce.domain.exceptions.ProductoYaExistenteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

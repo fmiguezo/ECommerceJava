@@ -1,13 +1,14 @@
 package com.techlab.ecommerce.domain.model.lineapedido;
 
-import com.techlab.ecommerce.domain.exceptions.CantidadNegativaException;
 import com.techlab.ecommerce.domain.model.producto.IProducto;
-
+import lombok.Getter;
+import lombok.Setter;
 import java.util.UUID;
 
+@Getter @Setter
 public class LineaPedido implements ILineaPedido {
     private UUID id;
-    private final IProducto producto;
+    private IProducto producto;
     private int cantidad;
 
     public LineaPedido(IProducto producto, int cantidad) {
@@ -16,31 +17,9 @@ public class LineaPedido implements ILineaPedido {
         this.cantidad = cantidad;
     }
 
-    @Override
-    public UUID getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(UUID id) {
+    public LineaPedido(UUID id, IProducto producto, int cantidad) {
         this.id = id;
-    }
-
-    @Override
-    public IProducto getProducto() {
-        return producto;
-    }
-
-    @Override
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    @Override
-    public void setCantidad(int cantidad) throws CantidadNegativaException {
-        if (cantidad < 0) {
-            throw new CantidadNegativaException("La cantidad no puede ser negativa");
-        }
+        this.producto = producto;
         this.cantidad = cantidad;
     }
 }

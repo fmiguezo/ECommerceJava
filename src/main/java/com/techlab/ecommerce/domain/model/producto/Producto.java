@@ -1,7 +1,10 @@
 package com.techlab.ecommerce.domain.model.producto;
 
+import lombok.Getter;
+import lombok.Setter;
 import java.util.UUID;
 
+@Getter @Setter
 public class Producto implements IProducto {
     private UUID id;
     private String nombre;
@@ -15,42 +18,10 @@ public class Producto implements IProducto {
         this.stock = stock;
     }
 
-    @Override
-    public UUID getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(UUID id) {
+    public Producto(UUID id, String nombre, double precio, int stock) {
         this.id = id;
-    }
-    @Override
-    public String getNombre() {
-        return nombre;
-    }
-
-    @Override
-    public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    @Override
-    public double getPrecio() {
-        return precio;
-    }
-
-    @Override
-    public void setPrecio(double precio) {
         this.precio = precio;
-    }
-
-    @Override
-    public int getStock() {
-        return stock;
-    }
-
-    @Override
-    public void setStock(int stock) {
         this.stock = stock;
     }
 }

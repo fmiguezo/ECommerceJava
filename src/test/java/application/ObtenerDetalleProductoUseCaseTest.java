@@ -1,19 +1,5 @@
 package application;
 
-import com.techlab.ecommerce.application.usecase.ObtenerDetalleProductoUseCase;
-import com.techlab.ecommerce.domain.model.producto.IProducto;
-import com.techlab.ecommerce.domain.service.producto.IProductoService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import java.util.Optional;
-import java.util.UUID;
-
 class ObtenerDetalleProductoUseCaseTest {
 
 /*    @Mock

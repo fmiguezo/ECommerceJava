@@ -1,26 +1,34 @@
 package com.techlab.ecommerce.application.mapper;
 
-import com.techlab.ecommerce.application.dto.LineaPedidoDTO;
-import com.techlab.ecommerce.application.dto.PedidoDTO;
-import com.techlab.ecommerce.domain.model.pedido.IPedido;
+import com.techlab.ecommerce.application.dto.*;
+import com.techlab.ecommerce.domain.model.pedido.Pedido;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
+@RequiredArgsConstructor
 public class PedidoMapper {
 
-    public static PedidoDTO toDTO(IPedido pedido) {
+    private final LineaPedidoMapper lineaPedidoMapper;
+
+    public PedidoDTO toDTO(Pedido pedido) {
+        if (pedido == null) return null;
+
         List<LineaPedidoDTO> lineasDTO = pedido.getLineas().stream()
-                .map(linea -> new LineaPedidoDTO(
-                        linea.getProducto().getNombre(),
-                        linea.getCantidad(),
-                        linea.getProducto().getPrecio()))
+                .map(lineaPedidoMapper::toDTO)
                 .collect(Collectors.toList());
 
         double costoTotal = lineasDTO.stream()
                 .mapToDouble(l -> l.getCantidad() * l.getPrecioUnitario())
                 .sum();
 
-        return new PedidoDTO(pedido.getId(), lineasDTO, costoTotal);
+        PedidoDTO dto = new PedidoDTO();
+        dto.setId(pedido.getId());
+        dto.setLineas(lineasDTO);
+        dto.setCostoTotal(costoTotal);
+        return dto;
     }
 }

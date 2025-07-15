@@ -1,50 +1,22 @@
 package com.techlab.ecommerce.application.dto;
 
+import jakarta.validation.constraints.*;
+import lombok.*;
+
 import java.util.UUID;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductoDTO {
     private UUID id;
+
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
+
+    @Positive(message = "El precio debe ser mayor a 0")
     private double precio;
+
+    @PositiveOrZero(message = "El stock no puede ser negativo")
     private int stock;
-
-    public ProductoDTO(String nombre, double precio, int stock) {
-        this.id = null;
-        this.nombre = nombre;
-        this.precio = precio;
-        this.stock = stock;
-    }
-
-    // Getters y Setters
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
 }

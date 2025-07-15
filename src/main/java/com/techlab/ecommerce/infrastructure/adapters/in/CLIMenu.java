@@ -1,17 +1,20 @@
 package com.techlab.ecommerce.infrastructure.adapters.in;
 
-import com.techlab.ecommerce.application.dto.LineaPedidoDTO;
-import com.techlab.ecommerce.application.dto.PedidoDTO;
-import com.techlab.ecommerce.application.dto.ProductoDTO;
-import com.techlab.ecommerce.application.usecase.*;
-import com.techlab.ecommerce.domain.model.producto.IProducto;
+import com.techlab.ecommerce.application.dto.*;
+import com.techlab.ecommerce.application.usecases.pedido.*;
+import com.techlab.ecommerce.application.usecases.producto.*;
+import com.techlab.ecommerce.domain.exceptions.*;
+import org.springframework.stereotype.Component;
+import com.techlab.ecommerce.infrastructure.adapters.in.IEntrada;
 
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
-import java.util.UUID;
 
+@Component
 public class CLIMenu implements IEntrada {
+
     private final GestionarProductoUseCase gestionarProductoUseCase;
     private final CrearPedidoUseCase crearPedidoUseCase;
     private final ListarPedidosUseCase listarPedidosUseCase;
@@ -19,7 +22,11 @@ public class CLIMenu implements IEntrada {
     private final ObtenerDetalleProductoUseCase obtenerDetalleProductoUseCase;
     private final Scanner scanner;
 
-    public CLIMenu(GestionarProductoUseCase gestionarProductoUseCase, CrearPedidoUseCase crearPedidoUseCase, ListarPedidosUseCase listarPedidosUseCase, ListarProductosUseCase listarProductosUseCase, ObtenerDetalleProductoUseCase obtenerDetalleProductoUseCase) {
+    public CLIMenu(GestionarProductoUseCase gestionarProductoUseCase,
+                   CrearPedidoUseCase crearPedidoUseCase,
+                   ListarPedidosUseCase listarPedidosUseCase,
+                   ListarProductosUseCase listarProductosUseCase,
+                   ObtenerDetalleProductoUseCase obtenerDetalleProductoUseCase) {
         this.gestionarProductoUseCase = gestionarProductoUseCase;
         this.crearPedidoUseCase = crearPedidoUseCase;
         this.listarPedidosUseCase = listarPedidosUseCase;
@@ -32,161 +39,118 @@ public class CLIMenu implements IEntrada {
         boolean continuar = true;
 
         while (continuar) {
-            System.out.println("=================================== SISTEMA DE GESTIÓN - TECHLAB ==================================");
+            System.out.println("\n=== MENÚ PRINCIPAL ===");
             System.out.println("1) Agregar producto");
             System.out.println("2) Listar productos");
-            System.out.println("3) Buscar/Actualizar producto");
+            System.out.println("3) Buscar producto");
             System.out.println("4) Eliminar producto");
-            System.out.println("5) Crear un pedido");
+            System.out.println("5) Crear pedido");
             System.out.println("6) Listar pedidos");
             System.out.println("7) Salir");
-            System.out.print("Elija una opción: ");
+            System.out.print("Opción: ");
 
             int opcion = scanner.nextInt();
-            scanner.nextLine(); // Consumir el salto de línea
+            scanner.nextLine();
 
             switch (opcion) {
-                case 1:
-                    agregarProducto();
-                    break;
-                case 2:
-                    listarProductos();
-                    break;
-                case 3:
-                    buscarActualizarProducto();
-                    break;
-                case 4:
-                    eliminarProducto();
-                    break;
-                case 5:
-                    crearPedido();
-                    break;
-                case 6:
-                    listarPedidos();
-                    break;
-                case 7:
-                    continuar = false;
-                    System.out.println("Saliendo del sistema...");
-                    scanner.close();
-                    break;
-                default:
-                    System.out.println("Opción no válida, intente nuevamente.");
+                case 1 -> agregarProducto();
+                case 2 -> listarProductos();
+                case 3 -> buscarProducto();
+                case 4 -> eliminarProducto();
+                case 5 -> crearPedido();
+                case 6 -> listarPedidos();
+                case 7 -> continuar = false;
+                default -> System.out.println("Opción inválida");
             }
         }
+        scanner.close();
     }
 
     private void agregarProducto() {
-        System.out.print("Ingrese nombre del producto: ");
-        String nombre = scanner.nextLine();
-        System.out.print("Ingrese precio del producto: ");
-        double precio = scanner.nextDouble();
-        System.out.print("Ingrese stock del producto: ");
-        int stock = scanner.nextInt();
-        scanner.nextLine(); // Consumir salto de línea
-
         try {
-            gestionarProductoUseCase.crearProducto(nombre, precio, stock);
-            System.out.println("Producto agregado con éxito.");
+            System.out.print("Nombre: ");
+            String nombre = scanner.nextLine();
+            System.out.print("Precio: ");
+            double precio = scanner.nextDouble();
+            System.out.print("Stock: ");
+            int stock = scanner.nextInt();
+            scanner.nextLine();
+
+            ProductoDTO producto = new ProductoDTO(null, nombre, precio, stock);
+            gestionarProductoUseCase.crearProducto(producto);
+            System.out.println("Producto creado");
         } catch (Exception e) {
-            System.out.println("Error al agregar producto: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
     private void listarProductos() {
-        List<ProductoDTO> productos = listarProductosUseCase.ejecutar();
-        System.out.println("Listado de productos:");
-        for (ProductoDTO producto : productos) {
-            System.out.println("ID: " + producto.getId() + " | Nombre: " + producto.getNombre() +
-                    " | Precio: " + producto.getPrecio() + " | Stock: " + producto.getStock());
+        try {
+            List<ProductoDTO> productos = listarProductosUseCase.ejecutar();
+            productos.forEach(p -> System.out.println(
+                    p.getId() + " - " + p.getNombre() + " - $" + p.getPrecio() + " - Stock: " + p.getStock()));
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
-    private void buscarActualizarProducto() {
-        System.out.print("Ingrese nombre del producto a buscar: ");
-        String nombre = scanner.nextLine();
+    private void buscarProducto() {
         try {
-            Optional<IProducto> producto = gestionarProductoUseCase.buscarProducto(nombre);
-            if (producto.isPresent()) {
-                ProductoDTO productoDTO = obtenerDetalleProductoUseCase.ejecutar(producto.get().getId());
-                System.out.println("Producto encontrado: " + productoDTO.getNombre() +
-                        " | Precio: " + productoDTO.getPrecio() + " | Stock: " + productoDTO.getStock());
-            } else {
-                System.out.println("Producto no encontrado.");
-            }
-            System.out.print("¿Desea actualizar el producto? (s/n): ");
-            String respuesta = scanner.nextLine();
-            if (respuesta.equalsIgnoreCase("s")) {
-                System.out.print("Ingrese nuevo precio: ");
-                double nuevoPrecio = scanner.nextDouble();
-                System.out.print("Ingrese nuevo stock: ");
-                int nuevoStock = scanner.nextInt();
-                scanner.nextLine();
-                gestionarProductoUseCase.actualizarProducto(nombre, nuevoPrecio, nuevoStock);
-                System.out.println("Producto actualizado con éxito.");
-            }
+            System.out.print("Nombre producto: ");
+            String nombre = scanner.nextLine();
+            Optional<ProductoDTO> producto = gestionarProductoUseCase.buscarProductoPorNombre(nombre);
+            producto.ifPresentOrElse(
+                    p -> System.out.println("Encontrado: " + p.getNombre() + " - $" + p.getPrecio()),
+                    () -> System.out.println("No encontrado"));
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
 
     private void eliminarProducto() {
-        System.out.print("Ingrese nombre del producto a eliminar: ");
-        String nombre = scanner.nextLine();
         try {
-            Optional<IProducto> producto = gestionarProductoUseCase.buscarProducto(nombre);
-            if (producto.isPresent()) {
-                gestionarProductoUseCase.eliminarProducto(producto.get().getId());
-                System.out.println("Producto eliminado con éxito.");
-            } else {
-                System.out.println("Producto no encontrado.");
-            }
+            System.out.print("ID producto: ");
+            UUID id = UUID.fromString(scanner.nextLine());
+            gestionarProductoUseCase.eliminarProducto(id);
+            System.out.println("Producto eliminado");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
 
     private void crearPedido() {
-        System.out.print("¿Cuántos productos desea agregar al pedido? ");
-        int cantidadProductos = scanner.nextInt();
-        scanner.nextLine();
-
-        java.util.Map<UUID, Integer> productosSolicitados = new java.util.HashMap<>();
-
-        for (int i = 0; i < cantidadProductos; i++) {
-            System.out.print("Ingrese el nombre del producto: ");
-            String nombreProducto = scanner.nextLine();
-            Optional<IProducto> producto;
-            try {
-               producto = gestionarProductoUseCase.buscarProducto(nombreProducto);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                i--;
-                continue;
-            }
-            System.out.print("Ingrese cantidad: ");
+        try {
+            System.out.print("Cantidad de productos: ");
             int cantidad = scanner.nextInt();
             scanner.nextLine();
-            productosSolicitados.put(producto.get().getId(), cantidad);
-        }
 
-        try {
-            crearPedidoUseCase.crearPedido(productosSolicitados);
-            System.out.println("Pedido creado con éxito.");
+            Map<UUID, Integer> productos = new HashMap<>();
+            for (int i = 0; i < cantidad; i++) {
+                System.out.print("ID Producto " + (i+1) + ": ");
+                UUID id = UUID.fromString(scanner.nextLine());
+                System.out.print("Cantidad: ");
+                int cant = scanner.nextInt();
+                scanner.nextLine();
+                productos.put(id, cant);
+            }
+
+            crearPedidoUseCase.ejecutar(productos);
+            System.out.println("Pedido creado");
         } catch (Exception e) {
-            System.out.println("Error al crear pedido: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
     private void listarPedidos() {
-        List<PedidoDTO> pedidos = listarPedidosUseCase.ejecutar();
-        System.out.println("Listado de pedidos:");
-        for (PedidoDTO pedido : pedidos) {
-            System.out.println("ID Pedido: " + pedido.getId() + " | Costo Total: " + pedido.getCostoTotal());
-            System.out.println("Productos:");
-            for (LineaPedidoDTO linea : pedido.getLineas()) {
-                System.out.println("- " + linea.getNombreProducto() + " x " + linea.getCantidad());
-            }
+        try {
+            List<PedidoDTO> pedidos = listarPedidosUseCase.ejecutar();
+            pedidos.forEach(p -> {
+                System.out.println("Pedido ID: " + p.getId());
+                p.getLineas().forEach(l ->
+                        System.out.println("  - " + l.getNombreProducto() + " x" + l.getCantidad()));
+            });
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
-
 }

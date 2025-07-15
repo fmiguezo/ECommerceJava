@@ -1,4 +1,4 @@
-package com.techlab.ecommerce.infrastructure.adapters.in.rest;
+package com.techlab.ecommerce.infrastructure.adapters.in.http;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;

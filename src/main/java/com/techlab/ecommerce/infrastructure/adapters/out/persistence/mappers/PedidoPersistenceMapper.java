@@ -5,53 +5,46 @@ import com.techlab.ecommerce.domain.model.pedido.IPedido;
 import com.techlab.ecommerce.domain.model.pedido.Pedido;
 import com.techlab.ecommerce.infrastructure.adapters.out.persistence.entities.LineaPedidoEntity;
 import com.techlab.ecommerce.infrastructure.adapters.out.persistence.entities.PedidoEntity;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class PedidoPersistenceMapper {
-    private LineaPedidoPersistenceMapper lineaPedidoPersistenceMapper;
-    private ProductoPersistenceMapper productoPersistenceMapper;
+    private final LineaPedidoPersistenceMapper lineaPedidoMapper;
 
-    public PedidoPersistenceMapper(LineaPedidoPersistenceMapper lineaPedidoPersistenceMapper, ProductoPersistenceMapper productoPersistenceMapper) {
-        this.lineaPedidoPersistenceMapper = lineaPedidoPersistenceMapper;
-        this.productoPersistenceMapper = productoPersistenceMapper;
+    public PedidoPersistenceMapper(LineaPedidoPersistenceMapper lineaPedidoMapper) {
+        this.lineaPedidoMapper = lineaPedidoMapper;
     }
 
-    @Transactional
     public IPedido toDomain(PedidoEntity entity) {
         if (entity == null) return null;
 
         List<ILineaPedido> lineas = entity.getLineas().stream()
-                .map(lineaPedidoPersistenceMapper::toDomain)
-                .toList();
+                .map(lineaPedidoMapper::toDomain)
+                .collect(Collectors.toList());
 
         IPedido pedido = new Pedido(lineas);
         pedido.setId(entity.getId());
         return pedido;
     }
 
-    @Transactional
     public PedidoEntity toEntity(IPedido pedido) {
         if (pedido == null) return null;
 
         PedidoEntity entity = new PedidoEntity();
         entity.setId(pedido.getId());
-        entity.setLineas(new ArrayList<>());
 
-        for (ILineaPedido linea : pedido.getLineas()) {
-            LineaPedidoEntity lineaEntity = lineaPedidoPersistenceMapper.toEntity(linea);
-            entity.getLineas().add(lineaEntity);
-        }
+        List<LineaPedidoEntity> lineasEntities = pedido.getLineas().stream()
+                .map(linea -> {
+                    LineaPedidoEntity lineaEntity = lineaPedidoMapper.toEntity(linea);
+                    lineaEntity.setPedido(entity); // Establece la relación bidireccional
+                    return lineaEntity;
+                })
+                .collect(Collectors.toList());
 
-        entity.getLineas().clear();
-        entity.getLineas().addAll(pedido.getLineas().stream()
-                .map(lineaPedidoPersistenceMapper::toEntity)
-                .toList());
-
+        entity.setLineas(lineasEntities);
         return entity;
     }
 }

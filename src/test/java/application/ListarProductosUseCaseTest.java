@@ -1,19 +1,5 @@
 package application;
 
-import com.techlab.ecommerce.application.usecase.ListarProductosUseCase;
-import com.techlab.ecommerce.domain.model.producto.IProducto;
-import com.techlab.ecommerce.domain.service.producto.IProductoService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import java.util.List;
-import java.util.UUID;
-
 class ListarProductosUseCaseTest {
 
 /*    @Mock

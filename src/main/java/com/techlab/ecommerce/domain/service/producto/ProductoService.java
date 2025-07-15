@@ -1,128 +1,82 @@
 package com.techlab.ecommerce.domain.service.producto;
 
-import com.techlab.ecommerce.application.dto.ProductoDTO;
-import com.techlab.ecommerce.application.mapper.ProductoMapper;
 import com.techlab.ecommerce.domain.exceptions.*;
 import com.techlab.ecommerce.domain.model.producto.IProducto;
-import com.techlab.ecommerce.domain.model.producto.ProductoFactory;
+import com.techlab.ecommerce.domain.validators.ProductoValidator;
 import com.techlab.ecommerce.infrastructure.ports.out.IProductoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class ProductoService implements IProductoService {
-    private ProductoFactory productoFactory;
-    private ProductoMapper productoMapper;
-    private IProductoRepository productoRepository;
 
-    @Autowired
-    public ProductoService(IProductoRepository productoRepository) {
-        this.productoRepository = productoRepository;
-        this.productoFactory = productoFactory;
-    }
+    private final IProductoRepository productoRepository;
 
+    @Transactional(readOnly = true)
     @Override
-    public IProducto crearProducto(ProductoDTO productoDTO) throws ProductoYaExistenteException {
-        Optional<IProducto> productoExistente = Optional.ofNullable(productoRepository.buscar(productoDTO.getNombre()));
-        if (productoExistente.isPresent()) {
-            throw new ProductoYaExistenteException("El producto ya existe con el nombre: " + productoDTO.getNombre());
+    public Optional<IProducto> findByNombre(String nombre) {
+        if (nombre == null || nombre.isBlank()) {
+            return Optional.empty();
         }
-        IProducto nuevoProducto = productoMapper.toDomain(productoDTO);
-        productoRepository.crear(nuevoProducto);
-        return nuevoProducto;
+        return productoRepository.findByNombre(nombre);
     }
 
+    @Transactional
     @Override
-    public void agregarProducto(String nombre, double precio, int stock) {
+    public IProducto updateStock(UUID productoId, int cantidad)
+            throws StockInsuficienteException, ProductoNoEncontradoException, ProductoException {
 
+        IProducto producto = productoRepository.findById(productoId)
+                .orElseThrow(() -> new ProductoNoEncontradoException(productoId.toString()));
+
+        int nuevoStock = producto.getStock() + cantidad;
+        ProductoValidator.validarStock(nuevoStock);
+
+        producto.setStock(nuevoStock);
+        return productoRepository.save(producto);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public List<ProductoDTO> listarProductos() {
-        List<IProducto> productos = productoRepository.obtenerTodos();
-        if (productos.isEmpty()) {
-            return List.of();
-        }
-
-        return productos.stream()
-                .map(productoMapper::toDTO)
-                .toList();
+    public Optional<IProducto> findById(UUID id) {
+        return productoRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public Optional<ProductoDTO> buscarProducto(UUID id) {
+    public List<IProducto> findAll() {
+        return productoRepository.findAll();
+    }
+
+    @Transactional
+    @Override
+    public IProducto save(IProducto producto) throws ProductoException {
+        ProductoValidator.validarNombre(producto.getNombre());
+        ProductoValidator.validarStock(producto.getStock());
+        return productoRepository.save(producto);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public boolean existsById(UUID id) {
         if (id == null) {
-            return Optional.empty();
+            return false;
         }
-        IProducto producto = productoRepository.buscar(id);
-        ProductoDTO productoDTO = productoMapper.toDTO(producto);
-
-        return Optional.ofNullable(productoDTO);
+        return productoRepository.existsById(id);
     }
 
+    @Transactional
     @Override
-    public Optional<ProductoDTO> buscarProducto(String nombre) {
-        if (nombre == null || nombre.isEmpty()) {
-            return Optional.empty();
+    public void deleteById(UUID id) throws ProductoNoEncontradoException {
+        if (!existsById(id)) {
+            throw new ProductoNoEncontradoException(id.toString());
         }
-        IProducto producto = productoRepository.buscar(nombre);
-        if (producto == null) {
-            return Optional.empty();
-        }
-        ProductoDTO productoDTO = productoMapper.toDTO(producto);
-        return Optional.of(productoDTO);
-    }
-
-    @Override
-    public void actualizarProducto(String nombre, double nuevoPrecio, int nuevoStock) throws ProductoNoEncontradoException, ProductoYaExistenteException {
-        Optional<IProducto> productoOpt = buscarProducto(nombre);
-        if (productoOpt.isPresent()) {
-            IProducto producto = productoOpt.get();
-            producto.setPrecio(nuevoPrecio);
-            producto.setStock(nuevoStock);
-        } else {
-            throw new ProductoNoEncontradoException("Producto no encontrado con nombre: " + nombre);
-        }
-    }
-
-    @Override
-    public void eliminarProducto(UUID id) throws ProductoNoEncontradoException {
-        Optional<IProducto> productoOpt = buscarProducto(id);
-        if (productoOpt.isPresent()) {
-            IProducto producto = productoOpt.get();
-            productoRepository.eliminar(producto.getId());
-        } else {
-            throw new ProductoNoEncontradoException("Producto no encontrado con id: " + id);
-        }
-    }
-
-    @Override
-    public void disminuirStock(IProducto producto, int cantidad) throws StockInsuficienteException {
-        if (producto.getStock() < cantidad) {
-            throw new StockInsuficienteException("Stock insuficiente para disminuir");
-        }
-        producto.setStock(producto.getStock() - cantidad);
-    }
-
-    @Override
-    public void aumentarStock(IProducto producto, int cantidad) throws CantidadNegativaException {
-        if (cantidad < 0) {
-            throw new CantidadNegativaException("La cantidad a aumentar no puede ser negativa");
-        }
-        producto.setStock(producto.getStock() + cantidad);
-    }
-
-    @Override
-    public void setProductoFactory(ProductoFactory productoFactory) {
-        this.productoFactory = productoFactory;
-    }
-
-    @Override
-    public ProductoFactory getProductoFactory() throws ProductFactoryNotSetException {
-        return productoFactory;
+        productoRepository.deleteById(id);
     }
 }

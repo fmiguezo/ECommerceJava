@@ -1,41 +1,45 @@
 package com.techlab.ecommerce.infrastructure.adapters.out.repository.memoria;
 
 import com.techlab.ecommerce.domain.model.pedido.IPedido;
-import com.techlab.ecommerce.infrastructure.adapters.out.repository.IPedidoRepository;
+import com.techlab.ecommerce.infrastructure.ports.out.IPedidoRepository;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
+@Profile("memory")
+@Component
 public class RepositoryMemoriaPedido implements IPedidoRepository {
-    private final List<IPedido> pedidos = new ArrayList<>();
+
+    private final Map<UUID, IPedido> pedidos = new ConcurrentHashMap<>();
 
     @Override
-    public void guardar(IPedido pedido) {
+    public IPedido save(IPedido pedido) {
         if (pedido == null) {
-            throw new IllegalArgumentException("El pedido no puede ser nulo");
+            throw new IllegalArgumentException("Pedido no puede ser nulo");
         }
-        if (pedidos.stream().anyMatch(p -> p.getId().equals(pedido.getId()))) {
-            throw new IllegalArgumentException("El pedido ya existe");
-        }
-        pedidos.add(pedido);
+        pedidos.put(pedido.getId(), pedido);
+        return pedido;
     }
 
     @Override
-    public Optional<IPedido> buscarPorId(UUID id) {
-        return pedidos.stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst();
+    public Optional<IPedido> findById(UUID id) {
+        return Optional.ofNullable(pedidos.get(id));
     }
 
     @Override
-    public List<IPedido> obtenerTodos() {
-        return pedidos;
+    public List<IPedido> findAll() {
+        return new ArrayList<>(pedidos.values());
     }
 
     @Override
-    public void eliminar(IPedido pedido) {
-        pedidos.remove(pedido);
+    public void deleteById(UUID id) {
+        pedidos.remove(id);
+    }
+
+    @Override
+    public boolean existsById(UUID id) {
+        return pedidos.containsKey(id);
     }
 }

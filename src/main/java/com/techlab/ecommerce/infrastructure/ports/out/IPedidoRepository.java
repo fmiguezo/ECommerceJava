@@ -7,8 +7,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface IPedidoRepository {
-    void guardar(IPedido pedido);
-    Optional<IPedido> buscarPorId(UUID id);
-    List<IPedido> obtenerTodos();
-    void eliminar(IPedido pedido);
+    IPedido save(IPedido pedido);
+    Optional<IPedido> findById(UUID id);
+    List<IPedido> findAll();
+    void deleteById(UUID id);
+    boolean existsById(UUID id);
 }
