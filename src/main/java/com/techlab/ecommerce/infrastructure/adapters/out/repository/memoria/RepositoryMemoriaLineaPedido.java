@@ -32,6 +32,21 @@ public class RepositoryMemoriaLineaPedido implements ILineaPedidoRepository {
         });
     }
 
+    @Override
+    public boolean existsById(UUID id) {
+        return lineas.containsKey(id);
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+        lineas.remove(id);
+    }
+
+    @Override
+    public Optional<ILineaPedido> findById(UUID id) {
+        return Optional.ofNullable(lineas.get(id));
+    }
+
     public void asociarAPedido(UUID lineaPedidoId, UUID pedidoId) {
         lineas.computeIfPresent(lineaPedidoId, (id, linea) -> {
             pedidoLineas.computeIfAbsent(pedidoId, k -> new ArrayList<>()).add(id);

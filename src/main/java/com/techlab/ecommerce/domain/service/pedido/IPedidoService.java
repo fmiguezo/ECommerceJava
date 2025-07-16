@@ -7,8 +7,13 @@ import com.techlab.ecommerce.domain.model.pedido.Pedido;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface IPedidoService {
+
+    @Transactional(readOnly = true)
+    List<IPedido> findAll();
 
     @Transactional
     Pedido crearPedido(List<ILineaPedido> lineas) throws PedidoException;
@@ -18,4 +23,6 @@ public interface IPedidoService {
 
     @Transactional
     void procesarPedido(IPedido pedido) throws PedidoException;
+
+    Optional<IPedido> findById(UUID id);
 }

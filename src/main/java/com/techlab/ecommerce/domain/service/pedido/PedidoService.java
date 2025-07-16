@@ -1,5 +1,6 @@
 package com.techlab.ecommerce.domain.service.pedido;
 
+import aj.org.objectweb.asm.commons.Remapper;
 import com.techlab.ecommerce.domain.exceptions.*;
 import com.techlab.ecommerce.domain.model.lineapedido.ILineaPedido;
 import com.techlab.ecommerce.domain.model.pedido.IPedido;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +23,8 @@ public class PedidoService implements IPedidoService {
     private final ILineaPedidoService lineaPedidoService;
     private final IPedidoRepository pedidoRepository;
 
-    @Override
     @Transactional(readOnly = true)
+    @Override
     public List<IPedido> findAll() {
         return pedidoRepository.findAll();
     }
@@ -51,20 +54,16 @@ public class PedidoService implements IPedidoService {
                 {
                     try {
                         lineaPedidoService.ajustarCantidad(linea, -linea.getCantidad());
-                    } catch (CantidadNegativaException e) {
-                        throw new RuntimeException(e);
-                    } catch (StockInsuficienteException e) {
-                        throw new RuntimeException(e);
-                    } catch (LineaPedidoInvalidaException e) {
-                        throw new RuntimeException(e);
-                    } catch (ProductoNoEncontradoException e) {
-                        throw new RuntimeException(e);
-                    } catch (ProductoException e) {
-                        throw new RuntimeException(e);
-                    } catch (LineaPedidoException e) {
+                    } catch (CantidadNegativaException | LineaPedidoException | ProductoException |
+                             ProductoNoEncontradoException | StockInsuficienteException | LineaPedidoInvalidaException e) {
                         throw new RuntimeException(e);
                     }
                 }
         );
+    }
+
+    @Override
+    public Optional<IPedido> findById(UUID id) {
+        return pedidoRepository.findById(id);
     }
 }

@@ -1,13 +1,11 @@
-package com.techlab.ecommerce.infrastructure.adapters.in;
+package com.techlab.ecommerce.infrastructure.adapters.in.cli;
 
 import com.techlab.ecommerce.application.dto.*;
 import com.techlab.ecommerce.application.usecases.pedido.*;
 import com.techlab.ecommerce.application.usecases.producto.*;
-import com.techlab.ecommerce.domain.exceptions.*;
 import org.springframework.stereotype.Component;
 import com.techlab.ecommerce.infrastructure.adapters.in.IEntrada;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.Scanner;

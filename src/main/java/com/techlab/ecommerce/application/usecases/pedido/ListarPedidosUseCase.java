@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,5 +24,10 @@ public class ListarPedidosUseCase {
                 .stream()
                 .map(pedidoMapper::toDTO)
                 .toList();
+    }
+
+    public Optional<PedidoDTO> buscarPorId(UUID id) {
+        return pedidoService.findById(id)
+                .map(pedidoMapper::toDTO);
     }
 }

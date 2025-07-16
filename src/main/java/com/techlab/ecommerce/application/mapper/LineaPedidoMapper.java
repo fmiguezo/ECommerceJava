@@ -8,6 +8,8 @@ import com.techlab.ecommerce.domain.service.producto.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class LineaPedidoMapper {
     @Autowired
@@ -23,10 +25,12 @@ public class LineaPedidoMapper {
         );
     }
 
-    public LineaPedido toDomain(LineaPedidoDTO dto) {
-        if (dto == null) {
+    public LineaPedido toDomain(Optional<LineaPedidoDTO> dtoOptional) {
+        if (dtoOptional == null || !dtoOptional.isPresent()) {
             return null;
         }
+
+        LineaPedidoDTO dto = dtoOptional.get();
 
         IProducto producto = productoService.findByNombre(dto.getNombreProducto())
                 .orElse(null);

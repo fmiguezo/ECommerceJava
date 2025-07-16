@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Profile("jpa")
@@ -19,12 +20,28 @@ public class LineaPedidoJpaRepositoryImpl implements ILineaPedidoRepository {
     private final LineaPedidoPersistenceMapper mapper;
 
     @Override
-    public ILineaPedido save(ILineaPedido lineaPedido) {  // Cambiado de 'guardar' a 'save'
+    public ILineaPedido save(ILineaPedido lineaPedido) {
         return mapper.toDomain(jpaRepository.save(mapper.toEntity(lineaPedido)));
     }
 
     @Override
     public void deleteByPedidoId(UUID pedidoId) {  // Cambiado de 'eliminarPorPedidoId' a 'deleteByPedidoId'
         jpaRepository.deleteByPedidoId(pedidoId);
+    }
+
+    @Override
+    public boolean existsById(UUID id) {
+        return jpaRepository.existsById(id);
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+        jpaRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<ILineaPedido> findById(UUID id) {
+        return jpaRepository.findById(id)
+                .map(mapper::toDomain);
     }
 }
