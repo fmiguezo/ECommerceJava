@@ -3,22 +3,25 @@ package com.techlab.ecommerce.infrastructure.adapters.out.repository.jpa;
 import com.techlab.ecommerce.domain.model.producto.IProducto;
 import com.techlab.ecommerce.infrastructure.adapters.out.persistence.mappers.ProductoPersistenceMapper;
 import com.techlab.ecommerce.infrastructure.ports.out.IProductoRepository;
-import com.techlab.ecommerce.infrastructure.ports.out.jpa.ProductoJpaRepository;
+import com.techlab.ecommerce.infrastructure.ports.out.ProductoJpaRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Profile("jpa")
-@Component
+@Repository
 @RequiredArgsConstructor
+@Lazy
 public class ProductoJpaRepositoryImpl implements IProductoRepository {
-
     private final ProductoJpaRepository jpaRepository;
-    private final ProductoPersistenceMapper mapper;
+    private final  ProductoPersistenceMapper mapper;
 
     @Override
     public IProducto save(IProducto producto) {

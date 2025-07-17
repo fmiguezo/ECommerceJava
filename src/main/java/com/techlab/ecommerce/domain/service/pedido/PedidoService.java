@@ -1,6 +1,5 @@
 package com.techlab.ecommerce.domain.service.pedido;
 
-import aj.org.objectweb.asm.commons.Remapper;
 import com.techlab.ecommerce.domain.exceptions.*;
 import com.techlab.ecommerce.domain.model.lineapedido.ILineaPedido;
 import com.techlab.ecommerce.domain.model.pedido.IPedido;
@@ -10,6 +9,7 @@ import com.techlab.ecommerce.domain.validators.PedidoValidator;
 import com.techlab.ecommerce.infrastructure.ports.out.IPedidoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

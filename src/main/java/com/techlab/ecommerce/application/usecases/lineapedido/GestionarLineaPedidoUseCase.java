@@ -6,10 +6,10 @@ import com.techlab.ecommerce.domain.exceptions.*;
 import com.techlab.ecommerce.domain.model.lineapedido.ILineaPedido;
 import com.techlab.ecommerce.domain.service.lineapedido.ILineaPedidoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,10 +27,10 @@ public class GestionarLineaPedidoUseCase {
     }
 
     @Transactional
-    public Optional<LineaPedidoDTO> ajustarCantidad(Optional<LineaPedidoDTO> lineaPedido, int cantidadDelta)
+    public LineaPedidoDTO ajustarCantidad(LineaPedidoDTO lineaPedido, int cantidadDelta)
             throws CantidadNegativaException, StockInsuficienteException,
             LineaPedidoInvalidaException, ProductoNoEncontradoException, ProductoException, LineaPedidoException {
-        lineaPedidoService.ajustarCantidad(lineaPedidoMapper.toDomain(lineaPedido), cantidadDelta);
+        lineaPedidoService.ajustarCantidad(lineaPedido, cantidadDelta);
         return lineaPedido;
     }
 
@@ -45,8 +45,8 @@ public class GestionarLineaPedidoUseCase {
     }
 
     @Transactional(readOnly = true)
-    public Optional<LineaPedidoDTO> buscarLineaPorId(UUID id) throws LineaPedidoNoEncontradaException {
+    public LineaPedidoDTO buscarLineaPorId(UUID id) throws LineaPedidoNoEncontradaException {
         ILineaPedido lineaPedido = lineaPedidoService.findById(id);
-        return Optional.of(lineaPedidoMapper.toDTO(lineaPedido));
+        return lineaPedidoMapper.toDTO(lineaPedido);
     }
 }

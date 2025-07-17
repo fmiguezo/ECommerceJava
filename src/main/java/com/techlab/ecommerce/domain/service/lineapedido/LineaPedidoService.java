@@ -1,25 +1,30 @@
 package com.techlab.ecommerce.domain.service.lineapedido;
 
+import com.techlab.ecommerce.application.dto.LineaPedidoDTO;
+import com.techlab.ecommerce.application.mapper.LineaPedidoMapper;
 import com.techlab.ecommerce.domain.exceptions.*;
 import com.techlab.ecommerce.domain.model.lineapedido.ILineaPedido;
 import com.techlab.ecommerce.domain.model.lineapedido.LineaPedido;
 
 import com.techlab.ecommerce.domain.model.producto.IProducto;
-import com.techlab.ecommerce.domain.service.producto.ProductoService;
+import com.techlab.ecommerce.domain.service.producto.IProductoService;
 import com.techlab.ecommerce.domain.validators.LineaPedidoValidator;
 import com.techlab.ecommerce.infrastructure.ports.out.ILineaPedidoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class LineaPedidoService implements ILineaPedidoService {
 
-    private final ProductoService productoService;
+    private final IProductoService productoService;
     private final ILineaPedidoRepository lineaPedidoRepository;
+    private final LineaPedidoMapper lineaPedidoMapper;
 
     @Transactional(readOnly = true)
     @Override
@@ -61,6 +66,19 @@ public class LineaPedidoService implements ILineaPedidoService {
                 lineaPedido.getProducto().getId(),
                 -cantidadDelta
         );
+    }
+
+    @Override
+    public void ajustarCantidad(LineaPedidoDTO dto, int cantidadDelta)
+            throws CantidadNegativaException, StockInsuficienteException, LineaPedidoInvalidaException,
+            ProductoNoEncontradoException, ProductoException, LineaPedidoException {
+
+        IProducto producto = productoService.findByNombre(dto.getNombreProducto())
+                .orElseThrow(() -> new ProductoNoEncontradoException("Producto no encontrado"));
+
+        ILineaPedido lineaPedido = lineaPedidoMapper.toDomain(Optional.of(dto), producto);
+
+        ajustarCantidad(lineaPedido, cantidadDelta); // llamás al método que ya tenías
     }
 
     @Transactional

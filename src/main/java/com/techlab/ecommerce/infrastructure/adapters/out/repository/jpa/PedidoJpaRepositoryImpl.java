@@ -3,18 +3,20 @@ package com.techlab.ecommerce.infrastructure.adapters.out.repository.jpa;
 import com.techlab.ecommerce.domain.model.pedido.IPedido;
 import com.techlab.ecommerce.infrastructure.adapters.out.persistence.mappers.PedidoPersistenceMapper;
 import com.techlab.ecommerce.infrastructure.ports.out.IPedidoRepository;
-import com.techlab.ecommerce.infrastructure.ports.out.jpa.PedidoJpaRepository;
+import com.techlab.ecommerce.infrastructure.ports.out.PedidoJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Profile("jpa")
-@Component
+@Repository
 @RequiredArgsConstructor
+@Lazy
 public class PedidoJpaRepositoryImpl implements IPedidoRepository {
     private final PedidoJpaRepository jpaRepository;
     private final PedidoPersistenceMapper mapper;

@@ -16,9 +16,9 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/pedidos")
+@RequestMapping("/pedidos")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:63342")
+@CrossOrigin(origins = "http://localhost:8080")
 public class PedidoController {
 
     private final CrearPedidoUseCase crearPedidoUseCase;

@@ -1,5 +1,6 @@
 package com.techlab.ecommerce.domain.service.lineapedido;
 
+import com.techlab.ecommerce.application.dto.LineaPedidoDTO;
 import com.techlab.ecommerce.domain.exceptions.*;
 import com.techlab.ecommerce.domain.model.lineapedido.ILineaPedido;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,10 @@ public interface ILineaPedidoService {
     void ajustarCantidad(ILineaPedido lineaPedido, int cantidadDelta)
             throws CantidadNegativaException, StockInsuficienteException, LineaPedidoInvalidaException, ProductoNoEncontradoException, ProductoException, LineaPedidoException;
 
+
+    void ajustarCantidad(LineaPedidoDTO dto, int cantidadDelta)
+            throws CantidadNegativaException, StockInsuficienteException, LineaPedidoInvalidaException,
+            ProductoNoEncontradoException, ProductoException, LineaPedidoException;
 
     @Transactional
     void eliminarLinea(UUID id) throws LineaPedidoNoEncontradaException;

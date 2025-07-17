@@ -4,6 +4,7 @@ import com.techlab.ecommerce.application.dto.ProductoDTO;
 import com.techlab.ecommerce.application.usecases.producto.GestionarProductoUseCase;
 import com.techlab.ecommerce.domain.exceptions.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +14,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/productos")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:63342")
+@CrossOrigin(origins = "http://localhost:8080")
 public class ProductoController {
 
     private final GestionarProductoUseCase gestionarProductoUseCase;
@@ -87,6 +88,15 @@ public class ProductoController {
             return ResponseEntity.badRequest().build();
         } catch (ProductoException e) {
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> testEndpoint() {
+        try {
+            return ResponseEntity.ok("Conexión exitosa a controlador");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

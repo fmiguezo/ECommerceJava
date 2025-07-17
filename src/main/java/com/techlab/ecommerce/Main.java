@@ -9,10 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class Main {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(Main.class, args);
-
         CLIMenu menu = context.getBean(CLIMenu.class);
         menu.mostrarMenu();
-
-
     }
 }

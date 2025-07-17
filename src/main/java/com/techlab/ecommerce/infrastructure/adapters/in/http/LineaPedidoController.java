@@ -15,9 +15,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/lineas-pedido")
+@RequestMapping("/lineas-pedido")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:63342")
+@CrossOrigin(origins = "http://localhost:8080")
 public class LineaPedidoController {
 
     private final GestionarLineaPedidoUseCase gestionarLineaPedidoUseCase;
@@ -26,8 +26,10 @@ public class LineaPedidoController {
     @GetMapping("/{id}")
     public ResponseEntity<LineaPedidoDTO> obtenerLinea(@PathVariable UUID id) {
         try {
-            LineaPedidoDTO lineaPedido = gestionarLineaPedidoUseCase.buscarLineaPorId(id)
-                    .orElseThrow(() -> new LineaPedidoNoEncontradaException("Linea de pedido no encontrada con ID: " + id));
+            LineaPedidoDTO lineaPedido = gestionarLineaPedidoUseCase.buscarLineaPorId(id);
+            if (lineaPedido == null) {
+                throw new LineaPedidoNoEncontradaException("Linea de pedido no encontrada con ID: " + id);
+            }
             return ResponseEntity.ok(lineaPedido);
         } catch (LineaPedidoNoEncontradaException e) {
             return ResponseEntity.notFound().build();
@@ -39,8 +41,8 @@ public class LineaPedidoController {
             @PathVariable UUID id,
             @RequestParam int cantidad) {
         try {
-            Optional<LineaPedidoDTO> linea = gestionarLineaPedidoUseCase.buscarLineaPorId(id);
-            Optional<LineaPedidoDTO> lineaActualizada = gestionarLineaPedidoUseCase.ajustarCantidad(linea, cantidad);
+            LineaPedidoDTO linea = gestionarLineaPedidoUseCase.buscarLineaPorId(id);
+            LineaPedidoDTO lineaActualizada = gestionarLineaPedidoUseCase.ajustarCantidad(linea, cantidad);
 
             return ResponseEntity.ok(lineaActualizada);
         } catch (LineaPedidoNoEncontradaException e) {

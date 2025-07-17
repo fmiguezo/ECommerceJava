@@ -6,6 +6,7 @@ import com.techlab.ecommerce.domain.model.lineapedido.ILineaPedido;
 import com.techlab.ecommerce.domain.model.pedido.IPedido;
 import com.techlab.ecommerce.domain.service.pedido.IPedidoService;
 
+import com.techlab.ecommerce.domain.service.producto.IProductoService;
 import com.techlab.ecommerce.domain.service.producto.ProductoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class CrearPedidoUseCase {
 
     private final GestionarLineaPedidoUseCase gestionarLineaPedidoUseCase;
     private final IPedidoService pedidoService;
-    private final ProductoService productoService;
+    private final IProductoService productoService;
 
     public IPedido ejecutar(Map<UUID, Integer> productosSolicitados)
             throws StockInsuficienteException, ProductoNoEncontradoException,

@@ -5,6 +5,7 @@ import com.techlab.ecommerce.domain.model.producto.IProducto;
 import com.techlab.ecommerce.domain.validators.ProductoValidator;
 import com.techlab.ecommerce.infrastructure.ports.out.IProductoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

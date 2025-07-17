@@ -1,7 +1,5 @@
 package com.techlab.ecommerce.infrastructure.ports.out;
 
-import com.techlab.ecommerce.domain.exceptions.ProductoNoEncontradoException;
-import com.techlab.ecommerce.domain.exceptions.ProductoYaExistenteException;
 import com.techlab.ecommerce.domain.model.producto.IProducto;
 
 import java.util.List;
