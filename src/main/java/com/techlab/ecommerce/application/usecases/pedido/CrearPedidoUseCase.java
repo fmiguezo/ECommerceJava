@@ -4,11 +4,14 @@ import com.techlab.ecommerce.application.usecases.lineapedido.GestionarLineaPedi
 import com.techlab.ecommerce.domain.exceptions.*;
 import com.techlab.ecommerce.domain.model.lineapedido.ILineaPedido;
 import com.techlab.ecommerce.domain.model.pedido.IPedido;
+import com.techlab.ecommerce.domain.service.lineapedido.ILineaPedidoService;
 import com.techlab.ecommerce.domain.service.pedido.IPedidoService;
 
 import com.techlab.ecommerce.domain.service.producto.IProductoService;
 import com.techlab.ecommerce.domain.service.producto.ProductoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +24,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Transactional
 public class CrearPedidoUseCase {
-
     private final GestionarLineaPedidoUseCase gestionarLineaPedidoUseCase;
-    private final IPedidoService pedidoService;
-    private final IProductoService productoService;
+    private IPedidoService pedidoService;
+    private IProductoService productoService;
+    private final ILineaPedidoService lineaPedidoService;
+
+    @Autowired
+    public CrearPedidoUseCase(GestionarLineaPedidoUseCase gestionarLineaPedidoUseCase, @Lazy IPedidoService pedidoService, ILineaPedidoService lineaPedidoService) {
+        this.gestionarLineaPedidoUseCase = gestionarLineaPedidoUseCase;
+        this.pedidoService = pedidoService;
+        this.lineaPedidoService = lineaPedidoService;
+    }
+
 
     public IPedido ejecutar(Map<UUID, Integer> productosSolicitados)
             throws StockInsuficienteException, ProductoNoEncontradoException,

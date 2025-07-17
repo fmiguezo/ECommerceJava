@@ -5,6 +5,7 @@ import com.techlab.ecommerce.domain.model.producto.IProducto;
 import com.techlab.ecommerce.domain.validators.ProductoValidator;
 import com.techlab.ecommerce.infrastructure.ports.out.IProductoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +15,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class ProductoService implements IProductoService {
 
     private final IProductoRepository productoRepository;
+
+    @Autowired
+    public ProductoService(@Lazy IProductoRepository productoRepository) {
+        this.productoRepository = productoRepository;
+    }
 
     @Transactional(readOnly = true)
     @Override

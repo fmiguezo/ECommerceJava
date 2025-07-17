@@ -11,6 +11,7 @@ import com.techlab.ecommerce.domain.service.producto.IProductoService;
 import com.techlab.ecommerce.domain.validators.LineaPedidoValidator;
 import com.techlab.ecommerce.infrastructure.ports.out.ILineaPedidoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,12 +21,15 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-@Lazy
 public class LineaPedidoService implements ILineaPedidoService {
+    private ILineaPedidoRepository lineaPedidoRepository;
+    private LineaPedidoMapper lineaPedidoMapper;
+    private IProductoService productoService;
 
-    private final IProductoService productoService;
-    private final ILineaPedidoRepository lineaPedidoRepository;
-    private final LineaPedidoMapper lineaPedidoMapper;
+    @Autowired
+    public void setProductoService(@Lazy IProductoService productoService) {
+        this.productoService = productoService;
+    }
 
     @Transactional(readOnly = true)
     @Override

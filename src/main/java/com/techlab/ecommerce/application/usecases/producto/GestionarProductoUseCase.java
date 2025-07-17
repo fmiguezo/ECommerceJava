@@ -6,6 +6,8 @@ import com.techlab.ecommerce.domain.exceptions.*;
 import com.techlab.ecommerce.domain.model.producto.IProducto;
 import com.techlab.ecommerce.domain.service.producto.IProductoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +17,16 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class GestionarProductoUseCase {
 
     private final IProductoService productoService;
     private final ProductoMapper productoMapper;
+
+    @Autowired
+    public GestionarProductoUseCase(@Lazy IProductoService productoService, ProductoMapper productoMapper) {
+        this.productoService = productoService;
+        this.productoMapper = productoMapper;
+    }
 
     @Transactional
     public ProductoDTO crearProducto(ProductoDTO productoDTO) throws ProductoException {

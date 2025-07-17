@@ -5,6 +5,7 @@ import com.techlab.ecommerce.infrastructure.adapters.out.persistence.mappers.Lin
 import com.techlab.ecommerce.infrastructure.ports.out.ILineaPedidoRepository;
 import com.techlab.ecommerce.infrastructure.ports.out.LineaPedidoJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
@@ -15,11 +16,16 @@ import java.util.UUID;
 
 // @Profile("jpa")
 @Repository
-@RequiredArgsConstructor
 @Lazy
 public class LineaPedidoJpaRepositoryImpl implements ILineaPedidoRepository {
     private final LineaPedidoJpaRepository jpaRepository;
     private final LineaPedidoPersistenceMapper mapper;
+
+    @Autowired
+    public LineaPedidoJpaRepositoryImpl(LineaPedidoJpaRepository jpaRepository, @Lazy LineaPedidoPersistenceMapper mapper) {
+        this.jpaRepository = jpaRepository;
+        this.mapper = mapper;
+    }
 
     @Override
     public ILineaPedido save(ILineaPedido lineaPedido) {

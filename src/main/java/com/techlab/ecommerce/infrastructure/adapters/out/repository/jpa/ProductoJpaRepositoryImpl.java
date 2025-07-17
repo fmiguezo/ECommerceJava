@@ -17,11 +17,16 @@ import java.util.UUID;
 
 // @Profile("jpa")
 @Repository
-@RequiredArgsConstructor
 @Lazy
 public class ProductoJpaRepositoryImpl implements IProductoRepository {
     private final ProductoJpaRepository jpaRepository;
     private final ProductoPersistenceMapper mapper;
+
+    @Autowired
+    public ProductoJpaRepositoryImpl(ProductoJpaRepository jpaRepository, @Lazy ProductoPersistenceMapper mapper) {
+        this.jpaRepository = jpaRepository;
+        this.mapper = mapper;
+    }
 
     @Override
     public IProducto save(IProducto producto) {
