@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Profile("jpa")
+// @Profile("jpa")
 @Repository
 @RequiredArgsConstructor
 @Lazy
 public class ProductoJpaRepositoryImpl implements IProductoRepository {
     private final ProductoJpaRepository jpaRepository;
-    private final  ProductoPersistenceMapper mapper;
+    private final ProductoPersistenceMapper mapper;
 
     @Override
     public IProducto save(IProducto producto) {

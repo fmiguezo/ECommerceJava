@@ -20,6 +20,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Lazy
 public class LineaPedidoService implements ILineaPedidoService {
 
     private final IProductoService productoService;

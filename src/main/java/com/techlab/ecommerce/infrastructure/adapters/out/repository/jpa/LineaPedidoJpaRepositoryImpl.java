@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 
-@Profile("jpa")
+// @Profile("jpa")
 @Repository
 @RequiredArgsConstructor
 @Lazy
